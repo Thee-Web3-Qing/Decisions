@@ -42,10 +42,16 @@ const StoryLibrary = () => {
                   borderRadius: 4,
                   border: '2px solid #22d3ee',
                   bgcolor: 'background.paper',
-                  minHeight: 340,
+                  minWidth: 320,
+                  maxWidth: 340,
+                  minHeight: 500,
+                  maxHeight: 600,
+                  width: '100%',
+                  height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                   transition: 'transform 0.2s, box-shadow 0.2s',
                   '&:hover': {
                     transform: 'scale(1.04)',
@@ -53,13 +59,25 @@ const StoryLibrary = () => {
                   },
                 }}
               >
-                <CardContent sx={{ width: '100%', textAlign: 'center', flexGrow: 1 }}>
+                <CardContent sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: story.description.length < 60 ? 'center' : 'flex-start',
+                  p: 2,
+                  minHeight: 300,
+                  overflow: 'hidden',
+                  position: 'relative',
+                }}>
                   {story.coverImage ? (
                     <Box
                       component="img"
                       src={story.coverImage}
                       alt={story.title}
-                      sx={{ width: '100%', maxWidth: 180, height: 120, objectFit: 'cover', borderRadius: 2, boxShadow: 2, mb: 2, border: '1px solid #bae6fd' }}
+                      sx={{ width: 180, height: 120, objectFit: 'cover', borderRadius: 2, boxShadow: 2, mb: 2, border: '1px solid #bae6fd', mx: 'auto', display: 'block' }}
                     />
                   ) : (
                     <Box sx={{ fontSize: 56, color: '#38bdf8', mb: 2 }}>{story.id === 1 ? '📖' : '🚧'}</Box>
@@ -103,8 +121,35 @@ const StoryLibrary = () => {
                     </Box>
                   )}
                   
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    {story.description}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      mb: 2,
+                      width: '100%',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 5,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      minHeight: '6em',
+                      maxHeight: '6em',
+                      lineHeight: 1.2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {story.description.length > 300
+                      ? (
+                        <>
+                          {story.description.slice(0, 300)}...{' '}
+                          <Button size="small" sx={{ p: 0, minWidth: 0, fontSize: '0.95em', textTransform: 'none' }} onClick={() => handleViewStory(story)}>
+                            Read more
+                          </Button>
+                        </>
+                      )
+                      : story.description
+                    }
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
