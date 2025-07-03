@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { MiniKitProvider, useMiniKit } from '@coinbase/onchainkit/minikit';
-import { useWeb3Store } from '../store/web3Store';
 
 const Web3Context = createContext();
 
@@ -16,48 +15,24 @@ export const useWeb3 = () => {
 const Web3InnerProvider = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const { setFrameReady, isFrameReady, context, updateClientContext } = useMiniKit();
-  const {
-    isConnected,
-    address,
-    connect,
-    disconnect,
-    recordChoice,
-    mintEnding,
-    updateProgress,
-    unlockAchievement
-  } = useWeb3Store();
 
   useEffect(() => {
     // Initialize MiniKit when component mounts
     const initWeb3 = async () => {
       try {
-        // Set frame ready when app is loaded
         if (!isFrameReady) {
           setFrameReady();
         }
-        
-        console.log('MiniKit initialized');
         setIsInitialized(true);
       } catch (error) {
-        console.error('Failed to initialize MiniKit:', error);
-        setIsInitialized(true); // Still set to true to not block the app
+        setIsInitialized(true);
       }
     };
-
     initWeb3();
   }, [isFrameReady, setFrameReady]);
 
   const value = {
     isInitialized,
-    isConnected,
-    address,
-    connect,
-    disconnect,
-    recordChoice,
-    mintEnding,
-    updateProgress,
-    unlockAchievement,
-    // MiniKit specific functions
     context,
     updateClientContext,
     isFrameReady

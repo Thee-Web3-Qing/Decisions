@@ -1,7 +1,9 @@
-import { useWeb3 } from './Web3Provider';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 const WalletConnect = () => {
-  const { isConnected, address, connect, disconnect } = useWeb3();
+  const { isConnected, address } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
 
   const handleConnect = async () => {
     try {

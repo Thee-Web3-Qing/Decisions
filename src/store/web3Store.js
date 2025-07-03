@@ -27,11 +27,6 @@ const STORY_ID = 1; // Uche's Journey
 export const useWeb3Store = create(
   persist(
     (set, get) => ({
-      // Connection state
-      isConnected: false,
-      address: null,
-      chainId: null,
-      
       // Story progress
       storyProgress: {},
       userChoices: {},
@@ -43,36 +38,6 @@ export const useWeb3Store = create(
       
       // Progress
       progress: {}, // { [address or 'guest']: { completed: bool, choices: [] } }
-      
-      // Connect wallet
-      connect: async () => {
-        try {
-          const result = await mockOnchainKit.connect();
-          set({
-            isConnected: true,
-            address: result.address,
-            chainId: result.chainId
-          });
-          return result;
-        } catch (error) {
-          console.error('Failed to connect:', error);
-          throw error;
-        }
-      },
-      
-      // Disconnect wallet
-      disconnect: async () => {
-        try {
-          await mockOnchainKit.disconnect();
-          set({
-            isConnected: false,
-            address: null,
-            chainId: null
-          });
-        } catch (error) {
-          console.error('Failed to disconnect:', error);
-        }
-      },
       
       // Record story choice onchain
       recordChoice: async (storyId, decisionId, choiceId) => {
