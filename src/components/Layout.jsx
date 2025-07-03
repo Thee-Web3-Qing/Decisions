@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import MobileNav from './MobileNav';
 
 const Layout = () => {
   return (
@@ -11,7 +10,6 @@ const Layout = () => {
           <Outlet />
         </main>
       </div>
-      <MobileNav />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import Profile from './components/Profile';
 import StoryPlay from './components/StoryPlay';
 import './App.css';
 import { useState, useEffect } from 'react';
+import { Web3Provider } from './components/Web3Provider';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -40,22 +41,13 @@ function AppContent() {
   };
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<StoryLibrary onStorySelect={handleStorySelect} />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/story/:storyId" element={<StoryLibrary onStorySelect={handleStorySelect} />} />
-        </Route>
-      </Routes>
-      {/* Overlay at root level */}
-      {selectedStoryId && selectedStoryId > 0 && (
-        <StoryPlay 
-          storyId={selectedStoryId} 
-          onClose={handleStoryClose}
-        />
-      )}
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<StoryLibrary onStorySelect={handleStorySelect} />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/story/:storyId" element={<StoryPlay onClose={handleStoryClose} />} />
+      </Route>
+    </Routes>
   );
 }
 
@@ -67,9 +59,11 @@ function App() {
           projectId="web3-life-mini-app"
           notificationProxyUrl="/api/notification"
         >
-          <Router>
-            <AppContent />
-          </Router>
+          <Web3Provider>
+            <Router>
+              <AppContent />
+            </Router>
+          </Web3Provider>
         </MiniKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

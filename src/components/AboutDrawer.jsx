@@ -1,12 +1,8 @@
 import React from "react";
 import { createPortal } from 'react-dom';
-import ucheCover from "../assets/uches-journey-cover.jpg"; // Adjust path if needed
 
 const AboutDrawer = ({ open, onClose, story }) => {
   if (!open) return null;
-
-  // Example: Only show cover for "Uche's Journey"
-  const isUche = story?.title === "Uche's Journey";
 
   return createPortal(
     <div className="fixed inset-0 z-[100]">
@@ -37,10 +33,10 @@ const AboutDrawer = ({ open, onClose, story }) => {
         </button>
         {/* About Content */}
         <div className="p-6 md:p-8 flex flex-col gap-6 overflow-y-auto flex-1">
-          {isUche && (
+          {story?.coverImage && (
             <img
-              src={ucheCover}
-              alt="Uche's Journey Book Cover"
+              src={story.coverImage}
+              alt={story.title}
               className="rounded-lg shadow-md w-full mb-4 object-cover"
               style={{ maxHeight: "260px" }}
             />

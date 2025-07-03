@@ -1,10 +1,12 @@
+import pinnedTweetCover from '../assets/the-pinned-tweet.jpg';
+
 export const stories = [
   {
     id: 1,
-    title: "Uche's Journey",
+    title: "The Pinned Tweet",
     character: "Anonymous Dev",
     description: "Navigate the viral fame and anonymity of a developer who accidentally went viral with a single tweet about their contract success.",
-    coverImage: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop",
+    coverImage: pinnedTweetCover,
     difficulty: "Medium",
     estimatedTime: "20 min",
     totalDecisions: 5,
@@ -183,5 +185,55 @@ export const stories = [
         ]
       }
     ]
-  }
+  },
+  {
+    id: 2,
+    title: "Coming Soon #1",
+    character: "???",
+    description: "A new interactive story is on the way. Stay tuned!",
+    coverImage: null,
+    difficulty: "TBA",
+    estimatedTime: "TBA",
+    totalDecisions: 0,
+  },
+  {
+    id: 3,
+    title: "Coming Soon #2",
+    character: "???",
+    description: "A new interactive story is on the way. Stay tuned!",
+    coverImage: null,
+    difficulty: "TBA",
+    estimatedTime: "TBA",
+    totalDecisions: 0,
+  },
+  {
+    id: 4,
+    title: "Coming Soon #3",
+    character: "???",
+    description: "A new interactive story is on the way. Stay tuned!",
+    coverImage: null,
+    difficulty: "TBA",
+    estimatedTime: "TBA",
+    totalDecisions: 0,
+  },
+  {
+    id: 5,
+    title: "Coming Soon #4",
+    character: "???",
+    description: "A new interactive story is on the way. Stay tuned!",
+    coverImage: null,
+    difficulty: "TBA",
+    estimatedTime: "TBA",
+    totalDecisions: 0,
+  },
+  {
+    id: 6,
+    title: "Coming Soon #5",
+    character: "???",
+    description: "A new interactive story is on the way. Stay tuned!",
+    coverImage: null,
+    difficulty: "TBA",
+    estimatedTime: "TBA",
+    totalDecisions: 0,
+  },
 ];
