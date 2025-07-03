@@ -9,7 +9,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardActions,
   Divider,
   Dialog,
   DialogTitle,
@@ -25,6 +24,7 @@ import AboutDrawer from './AboutDrawer';
 import { useWeb3 } from './Web3Provider';
 import Alert from '@mui/material/Alert';
 import BookIcon from '@mui/icons-material/Book';
+import Snackbar from '@mui/material/Snackbar';
 
 const StoryPlay = (props) => {
   const params = useParams();
@@ -44,6 +44,9 @@ const StoryPlay = (props) => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [storyProgress, setStoryProgress] = useState(null);
   const [visitedNodes, setVisitedNodes] = useState([]);
+  const [minting, setMinting] = useState(false);
+  const [mintSuccess, setMintSuccess] = useState(null);
+  const [mintError, setMintError] = useState(null);
 
   useEffect(() => {
     const story = stories.find(s => s.id === storyId);
@@ -301,6 +304,26 @@ const StoryPlay = (props) => {
 
   // Show ending if reached
   if (ending) {
+    const handleMint = async () => {
+      setMinting(true);
+      setMintSuccess(null);
+      setMintError(null);
+      try {
+        const result = await mintEnding(storyId, ending.id, {
+          title: ending.title,
+          description: ending.description,
+          image: currentStory.coverImage, // Use the book cover as NFT image
+          author: "QingTheCreator",
+          storyTitle: "The Pinned Tweet"
+        });
+        setMintSuccess(result);
+      } catch (err) {
+        setMintError(err.message || 'Minting failed');
+      } finally {
+        setMinting(false);
+      }
+    };
+
     return (
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="80vh" py={6}>
         <Card sx={{ 
@@ -389,10 +412,27 @@ const StoryPlay = (props) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => mintEnding(storyId, ending.id, { title: ending.title, description: ending.description })}
+            sx={{ ml: 2, minWidth: 180, fontWeight: 700, fontSize: '1rem' }}
+            onClick={handleMint}
+            disabled={minting}
           >
-            Mint Your Story
+            {minting ? 'Minting...' : 'Mint Your Story'}
           </Button>
+          {/* Mint Success Snackbar */}
+          <Snackbar open={!!mintSuccess} autoHideDuration={6000} onClose={() => setMintSuccess(null)}>
+            <Alert onClose={() => setMintSuccess(null)} severity="success" sx={{ width: '100%' }}>
+              NFT Minted! {mintSuccess?.transaction?.tokenId ? `Token ID: ${mintSuccess.transaction.tokenId}` : ''}
+              {mintSuccess?.transaction?.txHash && (
+                <span> | Tx: {mintSuccess.transaction.txHash}</span>
+              )}
+            </Alert>
+          </Snackbar>
+          {/* Mint Error Snackbar */}
+          <Snackbar open={!!mintError} autoHideDuration={6000} onClose={() => setMintError(null)}>
+            <Alert onClose={() => setMintError(null)} severity="error" sx={{ width: '100%' }}>
+              {mintError}
+            </Alert>
+          </Snackbar>
         </Card>
       </Box>
     );

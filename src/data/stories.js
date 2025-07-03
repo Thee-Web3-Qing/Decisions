@@ -110,9 +110,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1a1a", text: "Keep maintaining the tool quietly", ending: true },
-          { id: "A1a1b", text: "Sell it to a privacy-focused org", ending: true },
-          { id: "A1a1c", text: "Walk away and build something totally new", ending: true }
+          { id: "A1a1a", text: "Keep maintaining the tool quietly", ending: "A1a1a" },
+          { id: "A1a1b", text: "Sell it to a privacy-focused org", ending: "A1a1b" },
+          { id: "A1a1c", text: "Walk away and build something totally new", ending: "A1a1c" }
         ]
       },
       {
@@ -140,9 +140,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1a2a", text: "Log off and disappear again", ending: true },
-          { id: "A1a2b", text: "Start a philosophy blog about Web3", ending: true },
-          { id: "A1a2c", text: "Turn the moment into a zine drop", ending: true }
+          { id: "A1a2a", text: "Log off and disappear again", ending: "A1a2a" },
+          { id: "A1a2b", text: "Start a philosophy blog about Web3", ending: "A1a2b" },
+          { id: "A1a2c", text: "Turn the moment into a zine drop", ending: "A1a2c" }
         ]
       },
       {
@@ -170,9 +170,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1a3a", text: "Build a platform for narrative airdrops", ending: true },
-          { id: "A1a3b", text: "Disappear and let the drop stand on its own", ending: true },
-          { id: "A1a3c", text: "Start writing stories based on wallet behavior", ending: true }
+          { id: "A1a3a", text: "Build a platform for narrative airdrops", ending: "A1a3a" },
+          { id: "A1a3b", text: "Disappear and let the drop stand on its own", ending: "A1a3b" },
+          { id: "A1a3c", text: "Start writing stories based on wallet behavior", ending: "A1a3c" }
         ]
       },
       {
@@ -473,9 +473,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1b1a", text: "The DAO collapses in silence", ending: true },
-          { id: "A1b1b", text: "The DAO gains momentum and becomes a model for others", ending: true },
-          { id: "A1b1c", text: "Uche's subtle influence is discovered and reshapes the narrative", ending: true }
+          { id: "A1b1a", text: "The DAO collapses in silence", ending: "A1b1a" },
+          { id: "A1b1b", text: "The DAO gains momentum and becomes a model for others", ending: "A1b1b" },
+          { id: "A1b1c", text: "Uche's subtle influence is discovered and reshapes the narrative", ending: "A1b1c" }
         ]
       },
       {
@@ -503,9 +503,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1b2a", text: "The alias is mistaken for a collective and gets too much attention", ending: true },
-          { id: "A1b2b", text: "A builder funded by Uche goes on to change the space", ending: true },
-          { id: "A1b2c", text: "Uche is exposed in a chain analysis deep dive", ending: true }
+          { id: "A1b2a", text: "The alias is mistaken for a collective and gets too much attention", ending: "A1b2a" },
+          { id: "A1b2b", text: "A builder funded by Uche goes on to change the space", ending: "A1b2b" },
+          { id: "A1b2c", text: "Uche is exposed in a chain analysis deep dive", ending: "A1b2c" }
         ]
       },
       {
@@ -533,9 +533,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1b3a", text: "The group fractures without guidance", ending: true },
-          { id: "A1b3b", text: "A new anonymous leader rises", ending: true },
-          { id: "A1b3c", text: "The group becomes a digital cult", ending: true }
+          { id: "A1b3a", text: "The group fractures without guidance", ending: "A1b3a" },
+          { id: "A1b3b", text: "A new anonymous leader rises", ending: "A1b3b" },
+          { id: "A1b3c", text: "The group becomes a digital cult", ending: "A1b3c" }
         ]
       },
       {
@@ -828,9 +828,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1c1a", text: "Reveal his identity after the zine gains cult status", ending: true },
-          { id: "A1c1b", text: "Mint a second volume that contradicts the first", ending: true },
-          { id: "A1c1c", text: "Refuse to speak about it ever again", ending: true }
+          { id: "A1c1a", text: "Reveal his identity after the zine gains cult status", ending: "A1c1a" },
+          { id: "A1c1b", text: "Mint a second volume that contradicts the first", ending: "A1c1b" },
+          { id: "A1c1c", text: "Refuse to speak about it ever again", ending: "A1c1c" }
         ]
       },
       {
@@ -858,9 +858,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1c2a", text: "Start building again under a new name", ending: true },
-          { id: "A1c2b", text: "Reveal he was cyberhermit all along", ending: true },
-          { id: "A1c2c", text: "Quietly leave the space and work in a café", ending: true }
+          { id: "A1c2a", text: "Start building again under a new name", ending: "A1c2a" },
+          { id: "A1c2b", text: "Reveal he was cyberhermit all along", ending: "A1c2b" },
+          { id: "A1c2c", text: "Quietly leave the space and work in a café", ending: "A1c2c" }
         ]
       },
       {
@@ -888,9 +888,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "A1c3a", text: "Write a manifesto on digital rest", ending: true },
-          { id: "A1c3b", text: "Get invited to speak at a mental health panel", ending: true },
-          { id: "A1c3c", text: "Burn out again, but this time in silence", ending: true }
+          { id: "A1c3a", text: "Write a manifesto on digital rest", ending: "A1c3a" },
+          { id: "A1c3b", text: "Get invited to speak at a mental health panel", ending: "A1c3b" },
+          { id: "A1c3c", text: "Burn out again, but this time in silence", ending: "A1c3c" }
         ]
       },
       {
@@ -1281,9 +1281,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1a1a", text: "Apply for a bigger round of public goods funding", ending: true },
-          { id: "B1a1b", text: "Stay lean and keep it indie forever", ending: true },
-          { id: "B1a1c", text: "Hand it over to a DAO and move on", ending: true }
+          { id: "B1a1a", text: "Apply for a bigger round of public goods funding", ending: "B1a1a" },
+          { id: "B1a1b", text: "Stay lean and keep it indie forever", ending: "B1a1b" },
+          { id: "B1a1c", text: "Hand it over to a DAO and move on", ending: "B1a1c" }
         ]
       },
       {
@@ -1311,9 +1311,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1a2a", text: "Accept direct funding and deliver fast", ending: true },
-          { id: "B1a2b", text: "Stay neutral and open-source it without taking sides", ending: true },
-          { id: "B1a2c", text: "Write a post exposing the DAO's dysfunction", ending: true }
+          { id: "B1a2a", text: "Accept direct funding and deliver fast", ending: "B1a2a" },
+          { id: "B1a2b", text: "Stay neutral and open-source it without taking sides", ending: "B1a2b" },
+          { id: "B1a2c", text: "Write a post exposing the DAO's dysfunction", ending: "B1a2c" }
         ]
       },
       {
@@ -1341,9 +1341,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1a3a", text: "Collaborate with the forked team and unify efforts", ending: true },
-          { id: "B1a3b", text: "Double down and niche into a specific use case", ending: true },
-          { id: "B1a3c", text: "Archive the project and start a new one in stealth", ending: true }
+          { id: "B1a3a", text: "Collaborate with the forked team and unify efforts", ending: "B1a3a" },
+          { id: "B1a3b", text: "Double down and niche into a specific use case", ending: "B1a3b" },
+          { id: "B1a3c", text: "Archive the project and start a new one in stealth", ending: "B1a3c" }
         ]
       },
       {
@@ -1371,9 +1371,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1b1a", text: "Spin out a side project under the same team", ending: true },
-          { id: "B1b1b", text: "Leave to found your own protocol", ending: true },
-          { id: "B1b1c", text: "Step back and become an advisor", ending: true }
+          { id: "B1b1a", text: "Spin out a side project under the same team", ending: "B1b1a" },
+          { id: "B1b1b", text: "Leave to found your own protocol", ending: "B1b1b" },
+          { id: "B1b1c", text: "Step back and become an advisor", ending: "B1b1c" }
         ]
       },
       {
@@ -1401,9 +1401,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1b2a", text: "Leave and document your learnings", ending: true },
-          { id: "B1b2b", text: "Take a sabbatical and return recharged", ending: true },
-          { id: "B1b2c", text: "Quit and go solo in full stealth", ending: true }
+          { id: "B1b2a", text: "Leave and document your learnings", ending: "B1b2a" },
+          { id: "B1b2b", text: "Take a sabbatical and return recharged", ending: "B1b2b" },
+          { id: "B1b2c", text: "Quit and go solo in full stealth", ending: "B1b2c" }
         ]
       },
       {
@@ -1431,9 +1431,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1b3a", text: "Build internal tools and stay low", ending: true },
-          { id: "B1b3b", text: "Climb fast and take over product", ending: true },
-          { id: "B1b3c", text: "Realize the culture mismatch and leave quietly", ending: true }
+          { id: "B1b3a", text: "Build internal tools and stay low", ending: "B1b3a" },
+          { id: "B1b3b", text: "Climb fast and take over product", ending: "B1b3b" },
+          { id: "B1b3c", text: "Realize the culture mismatch and leave quietly", ending: "B1b3c" }
         ]
       },
       {
@@ -1461,9 +1461,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1c1a", text: "Compile the best entries into a published book", ending: true },
-          { id: "B1c1b", text: "Start live audio sessions based on the newsletter", ending: true },
-          { id: "B1c1c", text: "Shut it down while it's still pure", ending: true }
+          { id: "B1c1a", text: "Compile the best entries into a published book", ending: "B1c1a" },
+          { id: "B1c1b", text: "Start live audio sessions based on the newsletter", ending: "B1c1b" },
+          { id: "B1c1c", text: "Shut it down while it's still pure", ending: "B1c1c" }
         ]
       },
       {
@@ -1491,9 +1491,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1c2a", text: "Focus entirely on advocacy for builder wellness", ending: true },
-          { id: "B1c2b", text: "Return to building with a new mental model", ending: true },
-          { id: "B1c2c", text: "Start a DAO focused on mental health in Web3", ending: true }
+          { id: "B1c2a", text: "Focus entirely on advocacy for builder wellness", ending: "B1c2a" },
+          { id: "B1c2b", text: "Return to building with a new mental model", ending: "B1c2b" },
+          { id: "B1c2c", text: "Start a DAO focused on mental health in Web3", ending: "B1c2c" }
         ]
       },
       {
@@ -1521,9 +1521,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "B1c3a", text: "Archive the newsletter and build something new", ending: true },
-          { id: "B1c3b", text: "Re-emerge under a new voice, anonymously", ending: true },
-          { id: "B1c3c", text: "Turn inward and stop creating publicly altogether", ending: true }
+          { id: "B1c3a", text: "Archive the newsletter and build something new", ending: "B1c3a" },
+          { id: "B1c3b", text: "Re-emerge under a new voice, anonymously", ending: "B1c3b" },
+          { id: "B1c3c", text: "Turn inward and stop creating publicly altogether", ending: "B1c3c" }
         ]
       },
       {
@@ -2879,9 +2879,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1a2a", text: "Launch a full Web3 academy", ending: true },
-          { id: "C1a2b", text: "Partner with universities", ending: true },
-          { id: "C1a2c", text: "Create a certification program", ending: true }
+          { id: "C1a2a", text: "Launch a full Web3 academy", ending: "C1a2a" },
+          { id: "C1a2b", text: "Partner with universities", ending: "C1a2b" },
+          { id: "C1a2c", text: "Create a certification program", ending: "C1a2c" }
         ]
       },
       {
@@ -2901,9 +2901,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1a3a", text: "Expand certification globally", ending: true },
-          { id: "C1a3b", text: "Focus on industry partnerships", ending: true },
-          { id: "C1a3c", text: "Create specialized tracks", ending: true }
+          { id: "C1a3a", text: "Expand certification globally", ending: "C1a3a" },
+          { id: "C1a3b", text: "Focus on industry partnerships", ending: "C1a3b" },
+          { id: "C1a3c", text: "Create specialized tracks", ending: "C1a3c" }
         ]
       },
       {
@@ -2923,9 +2923,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1b1a", text: "Let the DAO evolve independently", ending: true },
-          { id: "C1b1b", text: "Guide the DAO's strategic direction", ending: true },
-          { id: "C1b1c", text: "Use the DAO to launch new projects", ending: true }
+          { id: "C1b1a", text: "Let the DAO evolve independently", ending: "C1b1a" },
+          { id: "C1b1b", text: "Guide the DAO's strategic direction", ending: "C1b1b" },
+          { id: "C1b1c", text: "Use the DAO to launch new projects", ending: "C1b1c" }
         ]
       },
       {
@@ -2945,9 +2945,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1b2a", text: "Keep it completely free forever", ending: true },
-          { id: "C1b2b", text: "Add optional premium features", ending: true },
-          { id: "C1b2c", text: "Partner with sponsors to maintain free access", ending: true }
+          { id: "C1b2a", text: "Keep it completely free forever", ending: "C1b2a" },
+          { id: "C1b2b", text: "Add optional premium features", ending: "C1b2b" },
+          { id: "C1b2c", text: "Partner with sponsors to maintain free access", ending: "C1b2c" }
         ]
       },
       {
@@ -2967,9 +2967,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1b3a", text: "Focus on early-stage builders", ending: true },
-          { id: "C1b3b", text: "Expand to include established projects", ending: true },
-          { id: "C1b3c", text: "Create a builder-focused incubator", ending: true }
+          { id: "C1b3a", text: "Focus on early-stage builders", ending: "C1b3a" },
+          { id: "C1b3b", text: "Expand to include established projects", ending: "C1b3b" },
+          { id: "C1b3c", text: "Create a builder-focused incubator", ending: "C1b3c" }
         ]
       },
       {
@@ -2989,9 +2989,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1c1a", text: "Keep the collective small and focused", ending: true },
-          { id: "C1c1b", text: "Expand the collective globally", ending: true },
-          { id: "C1c1c", text: "Turn the collective into a company", ending: true }
+          { id: "C1c1a", text: "Keep the collective small and focused", ending: "C1c1a" },
+          { id: "C1c1b", text: "Expand the collective globally", ending: "C1c1b" },
+          { id: "C1c1c", text: "Turn the collective into a company", ending: "C1c1c" }
         ]
       },
       {
@@ -3011,9 +3011,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1c2a", text: "Focus on building the platform", ending: true },
-          { id: "C1c2b", text: "Use the platform to launch projects", ending: true },
-          { id: "C1c2c", text: "Sell the platform to a larger company", ending: true }
+          { id: "C1c2a", text: "Focus on building the platform", ending: "C1c2a" },
+          { id: "C1c2b", text: "Use the platform to launch projects", ending: "C1c2b" },
+          { id: "C1c2c", text: "Sell the platform to a larger company", ending: "C1c2c" }
         ]
       },
       {
@@ -3033,9 +3033,9 @@ export const stories = [
           }
         ],
         choices: [
-          { id: "C1c3a", text: "Keep the network informal", ending: true },
-          { id: "C1c3b", text: "Formalize some partnerships", ending: true },
-          { id: "C1c3c", text: "Use the network for mutual support", ending: true }
+          { id: "C1c3a", text: "Keep the network informal", ending: "C1c3a" },
+          { id: "C1c3b", text: "Formalize some partnerships", ending: "C1c3b" },
+          { id: "C1c3c", text: "Use the network for mutual support", ending: "C1c3c" }
         ]
       }
     ]

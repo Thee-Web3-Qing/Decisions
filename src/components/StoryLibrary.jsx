@@ -107,31 +107,29 @@ const StoryLibrary = () => {
                     {story.description}
                   </Typography>
                 </CardContent>
-                {story.id === 1 && (
-                  <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
-                    <Button
-                      variant="contained"
-                      size="large"
-                      sx={{
-                        borderRadius: 3,
-                        px: 4,
-                        py: 1.5,
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        background: hasProgress ? 'linear-gradient(90deg, #10b981 0%, #2563eb 100%)' : 'linear-gradient(90deg, #2563eb 0%, #10b981 100%)',
+                <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      borderRadius: 3,
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 700,
+                      fontSize: '1rem',
+                      background: hasProgress ? 'linear-gradient(90deg, #10b981 0%, #2563eb 100%)' : 'linear-gradient(90deg, #2563eb 0%, #10b981 100%)',
+                      color: '#fff',
+                      boxShadow: 4,
+                      '&:hover': {
+                        background: 'linear-gradient(90deg, #10b981 0%, #2563eb 100%)',
                         color: '#fff',
-                        boxShadow: 4,
-                        '&:hover': {
-                          background: 'linear-gradient(90deg, #10b981 0%, #2563eb 100%)',
-                          color: '#fff',
-                        },
-                      }}
-                      onClick={() => handleViewStory(story)}
-                    >
-                      {hasProgress ? 'Continue Story' : 'View Story'}
-                    </Button>
-                  </CardActions>
-                )}
+                      },
+                    }}
+                    onClick={() => handleViewStory(story)}
+                  >
+                    {hasProgress ? 'Continue Story' : 'View Story'}
+                  </Button>
+                </CardActions>
               </Card>
             </Grid>
           );
