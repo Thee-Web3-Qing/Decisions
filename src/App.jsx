@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import StoryLibrary from './components/StoryLibrary';
 import Profile from './components/Profile';
 import StoryPlay from './components/StoryPlay';
+import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
 import { useState, useEffect } from 'react';
 import { Web3Provider } from './components/Web3Provider';
@@ -53,20 +54,22 @@ function AppContent() {
 
 function App() {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <MiniKitProvider
-          projectId="web3-life-mini-app"
-          notificationProxyUrl="/api/notification"
-        >
-          <Web3Provider>
-            <Router>
-              <AppContent />
-            </Router>
-          </Web3Provider>
-        </MiniKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ErrorBoundary>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <MiniKitProvider
+            projectId="web3-life-mini-app"
+            notificationProxyUrl="/api/notification"
+          >
+            <Web3Provider>
+              <Router>
+                <AppContent />
+              </Router>
+            </Web3Provider>
+          </MiniKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ErrorBoundary>
   );
 }
 

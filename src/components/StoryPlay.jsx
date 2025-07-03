@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardActions,
   Divider,
   Dialog,
   DialogTitle,
@@ -52,6 +53,7 @@ const StoryPlay = (props) => {
     try {
       const story = stories.find(s => s.id === storyId);
       if (!story) {
+        console.error('Story not found:', storyId);
         navigate('/');
         return;
       }
@@ -120,13 +122,13 @@ const StoryPlay = (props) => {
           setCurrentParaIdx(0);
         }
       } else {
-        setCurrentNode({ ...story.intro, type: 'intro' });
+    setCurrentNode({ ...story.intro, type: 'intro' });
         setCurrentParaIdx(0);
       }
       
-      setShowConnect(!isConnected);
-      setStarted(false);
-      setEnding(null);
+    setShowConnect(!isConnected);
+    setStarted(false);
+    setEnding(null);
     } catch (error) {
       console.error('Critical error in StoryPlay initialization:', error);
       // Fallback to safe state
@@ -201,34 +203,61 @@ const StoryPlay = (props) => {
   };
 
   const handleChoice = (choice) => {
-    setSelectedChoice(null);
-    // Find next node: decision or ending
-    if (choice.nextDecision) {
-      // Find next decision node
-      const nextNode = currentStory.decisions.find(d => d.id === choice.nextDecision);
-      if (nextNode) {
-        setCurrentNode({ ...nextNode, type: 'decision' });
-        return;
-      }
-    }
-    if (choice.ending) {
-      // Find ending node in decisions array (current structure)
-      const endingNode = currentStory.decisions.find(d => d.id === choice.ending);
-      if (endingNode) {
-        setEnding(endingNode);
-        return;
-      }
-      // Fallback to endings array if it exists
-      if (currentStory.endings) {
-        const endingNodeAlt = currentStory.endings.find(e => e.id === choice.ending);
-        if (endingNodeAlt) {
-          setEnding(endingNodeAlt);
+    try {
+      setSelectedChoice(null);
+      // Find next node: decision or ending
+      if (choice.nextDecision) {
+        // Find next decision node
+        const nextNode = currentStory.decisions.find(d => d.id === choice.nextDecision);
+        if (nextNode) {
+          setCurrentNode({ ...nextNode, type: 'decision' });
           return;
         }
       }
+      if (choice.ending) {
+        // Find ending node in decisions array (current structure)
+        const endingNode = currentStory.decisions.find(d => d.id === choice.ending);
+        if (endingNode) {
+          setEnding(endingNode);
+          return;
+        }
+        // Fallback to endings array if it exists
+        if (currentStory.endings) {
+          const endingNodeAlt = currentStory.endings.find(e => e.id === choice.ending);
+          if (endingNodeAlt) {
+            setEnding(endingNodeAlt);
+            return;
+          }
+        }
+        // If ending not found, create a fallback ending
+        console.warn('Ending not found:', choice.ending, 'for story:', currentStory.id);
+        setEnding({ 
+          title: 'The End', 
+          description: 'Thanks for playing! Your journey has concluded.',
+          paragraphs: [
+            {
+              id: 'fallback_p1',
+              text: 'You have reached the end of your story. Thank you for playing!'
+            }
+          ]
+        });
+        return;
+      }
+      // If no next node, just go back to library
+      setEnding({ title: 'The End', description: 'Thanks for playing!' });
+    } catch (error) {
+      console.error('Error in handleChoice:', error);
+      setEnding({ 
+        title: 'The End', 
+        description: 'Thanks for playing! Your journey has concluded.',
+        paragraphs: [
+          {
+            id: 'error_p1',
+            text: 'You have reached the end of your story. Thank you for playing!'
+          }
+        ]
+      });
     }
-    // If no next node, just go back to library
-    setEnding({ title: 'The End', description: 'Thanks for playing!' });
   };
 
   const handleQuitStory = () => {
@@ -275,6 +304,19 @@ const StoryPlay = (props) => {
     return (
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="60vh">
         <Typography variant="h5" color="text.secondary" sx={{ opacity: 0.7 }}>Loading story...</Typography>
+      </Box>
+    );
+  }
+
+  // Validate story structure
+  if (!currentStory.intro || !currentStory.decisions) {
+    console.error('Invalid story structure:', currentStory);
+    return (
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="60vh">
+        <Typography variant="h5" color="error.main" sx={{ mb: 2 }}>Story data is corrupted</Typography>
+        <Button variant="contained" onClick={() => navigate('/')}>
+          Return to Library
+        </Button>
       </Box>
     );
   }
@@ -497,6 +539,19 @@ const StoryPlay = (props) => {
             </Alert>
           </Snackbar>
         </Card>
+      </Box>
+    );
+  }
+
+  // Validate currentNode
+  if (!currentNode || !currentNode.paragraphs) {
+    console.error('Invalid currentNode:', currentNode);
+    return (
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="60vh">
+        <Typography variant="h5" color="error.main" sx={{ mb: 2 }}>Story state is corrupted</Typography>
+        <Button variant="contained" onClick={() => navigate('/')}>
+          Return to Library
+        </Button>
       </Box>
     );
   }
