@@ -51,13 +51,13 @@ const StoryPlay = (props) => {
 
   useEffect(() => {
     try {
-      const story = stories.find(s => s.id === storyId);
-      if (!story) {
+    const story = stories.find(s => s.id === storyId);
+    if (!story) {
         console.error('Story not found:', storyId);
-        navigate('/');
-        return;
-      }
-      setCurrentStory(story);
+      navigate('/');
+      return;
+    }
+    setCurrentStory(story);
       
       // Check for saved progress
       const savedProgress = localStorage.getItem(`storyProgress_${storyId}`);
@@ -204,23 +204,23 @@ const StoryPlay = (props) => {
 
   const handleChoice = (choice) => {
     try {
-      setSelectedChoice(null);
-      // Find next node: decision or ending
-      if (choice.nextDecision) {
-        // Find next decision node
-        const nextNode = currentStory.decisions.find(d => d.id === choice.nextDecision);
-        if (nextNode) {
-          setCurrentNode({ ...nextNode, type: 'decision' });
-          return;
-        }
+    setSelectedChoice(null);
+    // Find next node: decision or ending
+    if (choice.nextDecision) {
+      // Find next decision node
+      const nextNode = currentStory.decisions.find(d => d.id === choice.nextDecision);
+      if (nextNode) {
+        setCurrentNode({ ...nextNode, type: 'decision' });
+        return;
       }
-      if (choice.ending) {
+    }
+    if (choice.ending) {
         // Find ending node in decisions array (current structure)
         const endingNode = currentStory.decisions.find(d => d.id === choice.ending);
-        if (endingNode) {
-          setEnding(endingNode);
-          return;
-        }
+      if (endingNode) {
+        setEnding(endingNode);
+        return;
+      }
         // Fallback to endings array if it exists
         if (currentStory.endings) {
           const endingNodeAlt = currentStory.endings.find(e => e.id === choice.ending);
@@ -242,9 +242,9 @@ const StoryPlay = (props) => {
           ]
         });
         return;
-      }
-      // If no next node, just go back to library
-      setEnding({ title: 'The End', description: 'Thanks for playing!' });
+    }
+    // If no next node, just go back to library
+    setEnding({ title: 'The End', description: 'Thanks for playing!' });
     } catch (error) {
       console.error('Error in handleChoice:', error);
       setEnding({ 
@@ -299,6 +299,21 @@ const StoryPlay = (props) => {
       setShowQuitDialog(true);
     }
   };
+
+  // When user reaches an ending
+  useEffect(() => {
+    if (ending) {
+      const progress = {
+        ...storyProgress,
+        completed: true,
+        endingId: ending.id,
+        overallProgress: 100,
+        // ...other progress data
+      };
+      localStorage.setItem(`storyProgress_${storyId}`, JSON.stringify(progress));
+      setStoryProgress(progress);
+    }
+  }, [ending]);
 
   if (!currentStory) {
     return (
