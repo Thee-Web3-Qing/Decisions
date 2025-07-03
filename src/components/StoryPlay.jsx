@@ -422,6 +422,33 @@ const StoryPlay = (props) => {
                 }} 
               />
             )}
+            
+            {/* The End Message */}
+            <Divider sx={{ my: 4 }} />
+            <Typography 
+              variant="h3" 
+              fontWeight={900} 
+              color="primary.main" 
+              sx={{ 
+                textAlign: 'center',
+                fontFamily: '"Georgia", serif',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+                mb: 3
+              }}
+            >
+              The End
+            </Typography>
+            <Typography 
+              variant="body2" 
+              color="text.secondary" 
+              sx={{ 
+                textAlign: 'center',
+                fontStyle: 'italic',
+                mb: 2
+              }}
+            >
+              You've completed your journey. Mint your story as an NFT to remember this moment.
+            </Typography>
           </Box>
           <Button
             variant="contained"
