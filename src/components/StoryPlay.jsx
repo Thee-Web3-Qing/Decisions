@@ -49,54 +49,90 @@ const StoryPlay = (props) => {
   const [mintError, setMintError] = useState(null);
 
   useEffect(() => {
-    const story = stories.find(s => s.id === storyId);
-    if (!story) {
-      navigate('/');
-      return;
-    }
-    setCurrentStory(story);
-    
-    // Check for saved progress
-    const savedProgress = localStorage.getItem(`storyProgress_${storyId}`);
-    if (savedProgress) {
-      try {
-        const progress = JSON.parse(savedProgress);
-        let validNode = null;
-        let validParaIdx = 0;
-        // Validate currentNode
-        if (progress.currentNode && progress.currentNode.id) {
-          validNode = story.decisions.find(d => d.id === progress.currentNode.id);
-          if (!validNode && progress.currentNode.type === 'intro') {
+    try {
+      const story = stories.find(s => s.id === storyId);
+      if (!story) {
+        navigate('/');
+        return;
+      }
+      setCurrentStory(story);
+      
+      // Check for saved progress
+      const savedProgress = localStorage.getItem(`storyProgress_${storyId}`);
+      if (savedProgress) {
+        try {
+          const progress = JSON.parse(savedProgress);
+          let validNode = null;
+          let validParaIdx = 0;
+          
+          // Validate currentNode
+          if (progress.currentNode && progress.currentNode.id) {
+            // First try to find in decisions array
+            validNode = story.decisions.find(d => d.id === progress.currentNode.id);
+            
+            // If not found in decisions, check if it's an ending
+            if (!validNode && story.endings) {
+              validNode = story.endings.find(e => e.id === progress.currentNode.id);
+              if (validNode) {
+                // If it's an ending, set it as the ending state
+                setEnding(validNode);
+                setCurrentNode({ ...story.intro, type: 'intro' });
+                setCurrentParaIdx(0);
+                setStoryProgress(progress);
+                setVisitedNodes(progress.visitedNodes || []);
+                setShowConnect(!isConnected);
+                setStarted(false);
+                return;
+              }
+            }
+            
+            // If still not found and it's marked as intro, use intro
+            if (!validNode && progress.currentNode.type === 'intro') {
+              validNode = { ...story.intro, type: 'intro' };
+            }
+          } else if (progress.currentNode && progress.currentNode.type === 'intro') {
             validNode = { ...story.intro, type: 'intro' };
           }
-        } else if (progress.currentNode && progress.currentNode.type === 'intro') {
-          validNode = { ...story.intro, type: 'intro' };
+          
+          // If no valid node found, reset to intro
+          if (!validNode) {
+            console.warn('Invalid saved progress node, resetting to intro');
+            validNode = { ...story.intro, type: 'intro' };
+            validParaIdx = 0;
+          } else {
+            // Validate paraIdx
+            if (Array.isArray(validNode.paragraphs)) {
+              validParaIdx = Math.min(progress.currentParaIdx || 0, validNode.paragraphs.length - 1);
+            } else {
+              validParaIdx = 0;
+            }
+          }
+          
+          setStoryProgress(progress);
+          setCurrentNode(validNode);
+          setCurrentParaIdx(validParaIdx);
+          setVisitedNodes(progress.visitedNodes || []);
+        } catch (error) {
+          console.error('Error loading saved progress:', error);
+          // Clear corrupted progress and start fresh
+          localStorage.removeItem(`storyProgress_${storyId}`);
+          setCurrentNode({ ...story.intro, type: 'intro' });
+          setCurrentParaIdx(0);
         }
-        // Validate paraIdx
-        if (validNode && Array.isArray(validNode.paragraphs)) {
-          validParaIdx = Math.min(progress.currentParaIdx || 0, validNode.paragraphs.length - 1);
-        } else {
-          validNode = { ...story.intro, type: 'intro' };
-          validParaIdx = 0;
-        }
-        setStoryProgress(progress);
-        setCurrentNode(validNode);
-        setCurrentParaIdx(validParaIdx);
-        setVisitedNodes(progress.visitedNodes || []);
-      } catch (error) {
-        console.error('Error loading saved progress:', error);
-        // Fallback to starting from beginning
+      } else {
         setCurrentNode({ ...story.intro, type: 'intro' });
         setCurrentParaIdx(0);
       }
-    } else {
-      setCurrentNode({ ...story.intro, type: 'intro' });
-      setCurrentParaIdx(0);
+      
+      setShowConnect(!isConnected);
+      setStarted(false);
+      setEnding(null);
+    } catch (error) {
+      console.error('Critical error in StoryPlay initialization:', error);
+      // Fallback to safe state
+      setCurrentStory(null);
+      navigate('/');
     }
-    
-    setShowConnect(!isConnected);
-    setStarted(false);
-    setEnding(null);
   }, [storyId, navigate, isConnected]);
 
   useEffect(() => {
