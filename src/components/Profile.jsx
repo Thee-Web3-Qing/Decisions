@@ -1,24 +1,11 @@
 import { useAccount } from 'wagmi';
 import { Avatar, Name } from '@coinbase/onchainkit/identity';
 import { base } from 'viem/chains';
-import { useWeb3Store } from '../store/web3Store';
+import { stories } from '../data/stories';
+import { getStoryProgress, calculateStoryProgress } from '../utils/progressUtils';
 
 const Profile = () => {
   const { address } = useAccount();
-  const { getProgress, setAddress, resetProgress } = useWeb3Store();
-  if (address) setAddress(address);
-  const progress = getProgress();
-
-  // Uche's Journey only
-  const story = {
-    id: 1,
-    title: "Uche's Journey",
-    coverImage: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop",
-  };
-
-  let status = 'Not started';
-  if (progress.completed) status = 'Completed';
-  else if (progress.choices && progress.choices.length > 0) status = 'In progress';
 
   return (
     <div className="main-content">
@@ -49,19 +36,41 @@ const Profile = () => {
 
         <div style={{ margin: '2rem 0' }}>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }} className="text-white mb-4">Your Story Progress</h2>
-          <div className="progress-card" style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'rgba(30,41,59,0.8)', borderRadius: '0.5rem', padding: '1rem' }}>
-            <img src={story.coverImage} alt={story.title} style={{ width: '80px', height: '60px', borderRadius: '0.5rem', objectFit: 'cover' }} />
-            <div style={{ flex: 1 }}>
-              <h3 style={{ fontSize: '1.125rem', fontWeight: '600' }} className="text-white">{story.title}</h3>
-              <div style={{ fontSize: '0.875rem', color: '#60a5fa', fontWeight: '500', margin: '0.5rem 0' }}>{status}</div>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <span className="text-gray-400">Choices made: {progress.choices?.length || 0}</span>
-                {progress.completed && (
-                  <button className="btn btn-secondary" style={{ fontSize: '0.75rem', marginLeft: '1rem' }} onClick={resetProgress}>Reset Progress</button>
-                )}
+          {stories.map(story => {
+            const progress = getStoryProgress(story.id);
+            const percent = Math.round(calculateStoryProgress(story, progress));
+            let status = 'Not started';
+            
+            if (progress) {
+              status = percent >= 100 ? 'Completed' : 'In progress';
+            }
+            
+            return (
+              <div key={story.id} className="progress-card" style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'rgba(30,41,59,0.8)', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
+                <img src={story.coverImage} alt={story.title} style={{ width: '80px', height: '60px', borderRadius: '0.5rem', objectFit: 'cover' }} />
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: '600' }} className="text-white">{story.title}</h3>
+                  <div style={{ fontSize: '0.875rem', color: '#60a5fa', fontWeight: '500', margin: '0.5rem 0' }}>{status}</div>
+                  <div style={{ width: '100%', background: '#222', borderRadius: '0.25rem', height: '8px', margin: '0.5rem 0' }}>
+                    <div style={{
+                      width: `${percent}%`,
+                      background: percent === 100 ? '#22c55e' : '#60a5fa',
+                      height: '100%',
+                      borderRadius: '0.25rem',
+                      transition: 'width 0.3s'
+                    }} />
+                  </div>
+                  <span className="text-gray-400">{percent}% complete</span>
+                  {percent === 100 && (
+                    <button className="btn btn-secondary" style={{ fontSize: '0.75rem', marginLeft: '1rem' }} onClick={() => {
+                      localStorage.removeItem(`storyProgress_${story.id}`);
+                      window.location.reload();
+                    }}>Reset Progress</button>
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>

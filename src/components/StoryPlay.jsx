@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { stories } from '../data/stories';
-import AboutDrawer from './AboutDrawer';
 import { useParams, useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import { useWeb3 } from './Web3Provider';
-import Alert from '@mui/material/Alert';
-import LinearProgress from '@mui/material/LinearProgress';
-import IconButton from '@mui/material/IconButton';
+import { useAccount, useConnect } from 'wagmi';
+import { stories } from '../data/stories';
+import { calculateCurrentSessionProgress, calculateOverallParagraphProgress } from '../utils/progressUtils';
+import {
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  LinearProgress,
+  IconButton
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import AboutDrawer from './AboutDrawer';
+import { useWeb3 } from './Web3Provider';
+import Alert from '@mui/material/Alert';
 import BookIcon from '@mui/icons-material/Book';
 
 const StoryPlay = (props) => {
@@ -27,7 +30,7 @@ const StoryPlay = (props) => {
   const navigate = useNavigate();
   const storyId = props.storyId || parseInt(params.storyId);
   const { isConnected } = useAccount();
-  const { connect } = useWeb3();
+  const { connect, mintEnding } = useWeb3();
 
   const [currentStory, setCurrentStory] = useState(null);
   const [showAbout, setShowAbout] = useState(false);
@@ -39,6 +42,7 @@ const StoryPlay = (props) => {
   const [ending, setEnding] = useState(null);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [storyProgress, setStoryProgress] = useState(null);
+  const [visitedNodes, setVisitedNodes] = useState([]);
 
   useEffect(() => {
     const story = stories.find(s => s.id === storyId);
@@ -56,6 +60,7 @@ const StoryPlay = (props) => {
         setStoryProgress(progress);
         setCurrentNode(progress.currentNode);
         setCurrentParaIdx(progress.currentParaIdx);
+        setVisitedNodes(progress.visitedNodes || []);
       } catch (error) {
         console.error('Error loading saved progress:', error);
         // Fallback to starting from beginning
@@ -63,7 +68,7 @@ const StoryPlay = (props) => {
         setCurrentParaIdx(0);
       }
     } else {
-      setCurrentNode({ ...story.intro, type: 'intro' });
+    setCurrentNode({ ...story.intro, type: 'intro' });
       setCurrentParaIdx(0);
     }
     
@@ -78,6 +83,52 @@ const StoryPlay = (props) => {
     }
   }, [currentNode]);
 
+  // Track visited nodes/paragraphs
+  useEffect(() => {
+    if (currentNode && typeof currentParaIdx === 'number') {
+      setVisitedNodes(prev => {
+        const key = `${currentNode.id || currentNode.type}_${currentParaIdx}`;
+        if (prev.some(v => v.nodeId === (currentNode.id || currentNode.type) && v.paraIdx === currentParaIdx)) return prev;
+        return [...prev, { nodeId: currentNode.id || currentNode.type, paraIdx: currentParaIdx }];
+      });
+    }
+  }, [currentNode, currentParaIdx]);
+
+  // Handle browser back button and prevent accidental navigation
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      // Only show warning if user has made progress
+      if (currentNode && !(currentNode.type === 'intro' && currentParaIdx === 0)) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved progress. Are you sure you want to leave?';
+        return e.returnValue;
+      }
+    };
+
+    const handlePopState = (e) => {
+      // If user tries to go back and has progress, show save dialog
+      if (currentNode && !(currentNode.type === 'intro' && currentParaIdx === 0)) {
+        e.preventDefault();
+        setShowQuitDialog(true);
+        // Push the current state back to prevent navigation
+        window.history.pushState(null, '', window.location.pathname);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+
+    // Push current state to enable back button detection
+    if (started) {
+      window.history.pushState(null, '', window.location.pathname);
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [currentNode, currentParaIdx, started]);
+
   const handleNext = () => {
     setCurrentParaIdx(idx => idx + 1);
   };
@@ -86,34 +137,9 @@ const StoryPlay = (props) => {
     setCurrentParaIdx(idx => Math.max(0, idx - 1));
   };
 
-  // Calculate overall story progress
+  // Calculate overall story progress using unique paragraphs
   const calculateOverallProgress = () => {
-    if (!currentStory) return 0;
-    
-    // Count total nodes in the story
-    const totalNodes = 1 + currentStory.decisions.length; // intro + decisions
-    let completedNodes = 0;
-    
-    // Count completed nodes based on current position
-    if (currentNode.type === 'intro') {
-      // If we're in intro, count based on paragraph progress
-      const introProgress = currentNode.paragraphs ? (currentParaIdx + 1) / currentNode.paragraphs.length : 0;
-      completedNodes = introProgress;
-    } else if (currentNode.type === 'decision') {
-      // If we're in a decision, count intro as complete + decision progress
-      completedNodes = 1; // intro is complete
-      
-      // Find current decision index
-      const currentDecisionIndex = currentStory.decisions.findIndex(d => d.id === currentNode.id);
-      if (currentDecisionIndex !== -1) {
-        completedNodes += currentDecisionIndex; // previous decisions are complete
-        // Add progress of current decision
-        const decisionProgress = currentNode.paragraphs ? (currentParaIdx + 1) / currentNode.paragraphs.length : 0;
-        completedNodes += decisionProgress;
-      }
-    }
-    
-    return Math.min(100, (completedNodes / totalNodes) * 100);
+    return calculateOverallParagraphProgress(currentStory, { visitedNodes });
   };
 
   const handleChoice = (choice) => {
@@ -128,11 +154,19 @@ const StoryPlay = (props) => {
       }
     }
     if (choice.ending) {
-      // Find ending node
-      const endingNode = currentStory.endings.find(e => e.id === choice.ending);
+      // Find ending node in decisions array (current structure)
+      const endingNode = currentStory.decisions.find(d => d.id === choice.ending);
       if (endingNode) {
         setEnding(endingNode);
         return;
+      }
+      // Fallback to endings array if it exists
+      if (currentStory.endings) {
+        const endingNodeAlt = currentStory.endings.find(e => e.id === choice.ending);
+        if (endingNodeAlt) {
+          setEnding(endingNodeAlt);
+          return;
+        }
       }
     }
     // If no next node, just go back to library
@@ -145,6 +179,7 @@ const StoryPlay = (props) => {
       storyId: currentStory.id,
       currentNode: currentNode,
       currentParaIdx: currentParaIdx,
+      visitedNodes,
       timestamp: new Date().toISOString(),
       overallProgress: calculateOverallProgress()
     };
@@ -161,6 +196,7 @@ const StoryPlay = (props) => {
     // Remove saved progress
     localStorage.removeItem(`storyProgress_${currentStory.id}`);
     setStoryProgress(null);
+    setVisitedNodes([]);
     
     // Navigate back to library
     navigate('/');
@@ -331,6 +367,13 @@ const StoryPlay = (props) => {
           >
             Back to Library
           </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => mintEnding(storyId, ending.id, { title: ending.title, description: ending.description })}
+          >
+            Mint Your Story
+          </Button>
         </Card>
       </Box>
     );
@@ -358,25 +401,25 @@ const StoryPlay = (props) => {
       }}>
         {/* Header Navigation */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Button
+        <Button
             startIcon={<ArrowBackIcon />}
             sx={{ borderRadius: 2, fontWeight: 600 }}
             onClick={handleBackToLibrary}
-          >
+        >
             Library
-          </Button>
+        </Button>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <BookIcon color="primary" />
             <Typography variant="h6" fontWeight={700} color="primary">
               {currentStory.title}
             </Typography>
           </Box>
-          <Button
+        <Button
             sx={{ borderRadius: 2, fontWeight: 600 }}
-            onClick={() => setShowAbout(true)}
-          >
-            About
-          </Button>
+          onClick={() => setShowAbout(true)}
+        >
+          About
+        </Button>
         </Box>
 
         {/* Progress Bar */}
@@ -387,7 +430,7 @@ const StoryPlay = (props) => {
             </Typography>
             <Typography variant="caption" color="text.secondary">
               {Math.round(overallProgress)}% Story Complete
-            </Typography>
+        </Typography>
           </Box>
           <LinearProgress 
             variant="determinate" 
@@ -436,7 +479,7 @@ const StoryPlay = (props) => {
               }}
             >
               {currentParagraph ? currentParagraph.text : 'Loading...'}
-            </Typography>
+          </Typography>
           </Box>
         </CardContent>
 
@@ -444,26 +487,26 @@ const StoryPlay = (props) => {
         <CardActions sx={{ justifyContent: 'center', mt: 2, flexWrap: 'wrap', gap: 2 }}>
           {/* Previous Button */}
           {currentParaIdx > 0 && (
-            <Button
+              <Button
               variant="outlined"
-              color="primary"
+                color="primary"
               size="large"
               startIcon={<ArrowBackIcon />}
-              sx={{ 
-                borderRadius: 3, 
-                px: 4, 
-                py: 1.5, 
+                sx={{
+                  borderRadius: 3,
+                  px: 4,
+                  py: 1.5,
                 fontWeight: 600, 
-                fontSize: '1rem',
+                  fontSize: '1rem',
                 borderWidth: 2,
-                '&:hover': {
+                  '&:hover': {
                   borderWidth: 2
                 }
-              }}
+                }}
               onClick={handlePrevious}
-            >
+              >
               Previous
-            </Button>
+              </Button>
           )}
           
           {/* Next Button */}
