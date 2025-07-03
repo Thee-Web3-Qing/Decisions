@@ -13,7 +13,7 @@ const Header = () => {
       <div className="container">
         <div className="nav-content">
           <Link to="/" className="nav-logo">
-            Web3 Life
+            Decisions
           </Link>
           
           <nav className="nav-links">

@@ -31,16 +31,16 @@ const Profile = () => {
                   <Avatar address={address} chain={base} style={{ width: '80px', height: '80px', borderRadius: '50%', border: '3px solid rgba(59, 130, 246, 0.5)' }} />
                 </div>
                 <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }} className="text-white mb-2">
-                  <Name address={address} chain={base} fallback="Web3 Explorer" />
+                  <Name address={address} chain={base} fallback="Decisions Explorer" />
                 </h1>
-                <p className="text-gray-300">Web3 Adventure Explorer on Base</p>
+                <p className="text-gray-300">Decisions Explorer</p>
                 <p className="text-gray-400" style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>{address.slice(0, 6)}...{address.slice(-4)}</p>
               </>
             ) : (
               <>
                 <div className="profile-avatar">👤</div>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }} className="text-white mb-2">Web3 Explorer</h1>
-                <p className="text-gray-300">Web3 Adventure Explorer</p>
+                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }} className="text-white mb-2">Decisions Explorer</h1>
+                <p className="text-gray-300">Explore interactive stories onchain</p>
                 <p className="text-gray-400" style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>Connect your wallet to see your Basename</p>
               </>
             )}

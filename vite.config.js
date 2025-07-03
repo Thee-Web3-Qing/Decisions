@@ -6,5 +6,15 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': {}
+  },
+  server: {
+    historyApiFallback: true
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   }
 })

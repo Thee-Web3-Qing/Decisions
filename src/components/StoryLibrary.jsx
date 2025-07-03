@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
 import { stories } from '../data/stories';
 
-const StoryLibrary = () => {
+const StoryLibrary = ({ onStorySelect }) => {
   // Only show Uche's Journey
   const ucheStory = stories[0];
 
@@ -9,20 +8,23 @@ const StoryLibrary = () => {
     <div style={{ marginBottom: '2rem' }}>
       <div className="text-center mb-12">
         <h2 style={{ fontSize: '1.875rem', fontWeight: 'bold' }} className="text-white mb-4">
-          Choose Your Web3 Adventure
+          Welcome to Decisions
         </h2>
         <p className="text-gray-300" style={{ maxWidth: '42rem', margin: '0 auto' }}>
-          Experience the diverse lives of web3 personalities across Africa and beyond. 
-          Each story offers unique perspectives and branching narratives based on your choices.
+          Experience interactive, onchain choose-your-own-adventure stories. Each story offers unique perspectives and branching narratives based on your choices.
         </p>
       </div>
 
       <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
         {/* Uche's Journey Story Card */}
-        <Link
+        <div
           key={ucheStory.id}
-          to={`/story/${ucheStory.id}`}
-          style={{ display: 'block', textDecoration: 'none' }}
+          onClick={() => onStorySelect(ucheStory.id)}
+          style={{ 
+            display: 'block', 
+            textDecoration: 'none',
+            cursor: 'pointer'
+          }}
         >
           <div style={{
             backgroundColor: '#1f2937',
@@ -72,7 +74,7 @@ const StoryLibrary = () => {
               </div>
             </div>
           </div>
-        </Link>
+        </div>
 
         {/* Coming Soon Card */}
         <div style={{

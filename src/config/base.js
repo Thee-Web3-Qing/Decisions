@@ -1,4 +1,4 @@
-// Base configuration for Web3 Life mini app
+// Base configuration for Decisions mini app
 export const BASE_CONFIG = {
   // Base network configuration
   chainId: 8453, // Base mainnet
@@ -8,11 +8,11 @@ export const BASE_CONFIG = {
   
   // MiniKit configuration
   miniKit: {
-    appId: 'web3-life-mini-app',
-    appName: 'Web3 Life',
-    appDescription: 'Choose-your-own-adventure stories on Base',
+    appId: 'decisions-app',
+    appName: 'Decisions',
+    appDescription: 'Interactive choose-your-own-adventure stories on Base',
     appIcon: '/app-icon.png',
-    appUrl: 'https://web3-life.app',
+    appUrl: 'https://decisions.app',
     supportedChains: [8453], // Base only
     features: ['story-progress', 'choice-tracking', 'ending-minting']
   },
