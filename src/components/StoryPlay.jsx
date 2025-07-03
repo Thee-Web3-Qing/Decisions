@@ -57,9 +57,27 @@ const StoryPlay = (props) => {
     if (savedProgress) {
       try {
         const progress = JSON.parse(savedProgress);
+        let validNode = null;
+        let validParaIdx = 0;
+        // Validate currentNode
+        if (progress.currentNode && progress.currentNode.id) {
+          validNode = story.decisions.find(d => d.id === progress.currentNode.id);
+          if (!validNode && progress.currentNode.type === 'intro') {
+            validNode = { ...story.intro, type: 'intro' };
+          }
+        } else if (progress.currentNode && progress.currentNode.type === 'intro') {
+          validNode = { ...story.intro, type: 'intro' };
+        }
+        // Validate paraIdx
+        if (validNode && Array.isArray(validNode.paragraphs)) {
+          validParaIdx = Math.min(progress.currentParaIdx || 0, validNode.paragraphs.length - 1);
+        } else {
+          validNode = { ...story.intro, type: 'intro' };
+          validParaIdx = 0;
+        }
         setStoryProgress(progress);
-        setCurrentNode(progress.currentNode);
-        setCurrentParaIdx(progress.currentParaIdx);
+        setCurrentNode(validNode);
+        setCurrentParaIdx(validParaIdx);
         setVisitedNodes(progress.visitedNodes || []);
       } catch (error) {
         console.error('Error loading saved progress:', error);
@@ -68,7 +86,7 @@ const StoryPlay = (props) => {
         setCurrentParaIdx(0);
       }
     } else {
-    setCurrentNode({ ...story.intro, type: 'intro' });
+      setCurrentNode({ ...story.intro, type: 'intro' });
       setCurrentParaIdx(0);
     }
     
