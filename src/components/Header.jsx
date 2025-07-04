@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import OnchainKitWallet from './OnchainKitWallet';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -11,7 +10,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
 import { useState } from 'react';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useAccount, useDisconnect } from 'wagmi';
+import { ConnectWallet } from '@coinbase/onchainkit/wallet';
 
 const navLinks = [
   { label: 'Stories', path: '/' },
@@ -21,8 +28,84 @@ const navLinks = [
 const Header = () => {
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
 
   const isActive = (path) => location.pathname === path;
+
+  // Custom wallet component
+  const WalletComponent = () => {
+    if (isConnected && address) {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Chip
+            icon={<CheckCircleIcon />}
+            label="Connected"
+            variant="outlined"
+            sx={{
+              color: '#10b981',
+              borderColor: '#10b981',
+              bgcolor: 'rgba(16, 185, 129, 0.1)',
+              fontWeight: 600,
+              '& .MuiChip-icon': {
+                color: '#10b981',
+              },
+              '&:hover': {
+                bgcolor: 'rgba(16, 185, 129, 0.15)',
+              }
+            }}
+          />
+          <Avatar
+            sx={{
+              width: 32,
+              height: 32,
+              bgcolor: 'rgba(56, 189, 248, 0.2)',
+              color: '#38bdf8',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              '&:hover': {
+                bgcolor: 'rgba(56, 189, 248, 0.3)',
+              }
+            }}
+            onClick={() => disconnect()}
+          >
+            {address.slice(2, 4).toUpperCase()}
+          </Avatar>
+        </Box>
+      );
+    } else {
+      return (
+        <ConnectWallet>
+          <Button
+            variant="contained"
+            startIcon={<AccountBalanceWalletIcon />}
+            sx={{
+              background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)',
+              color: '#fff',
+              fontWeight: 600,
+              px: 3,
+              py: 1,
+              borderRadius: '12px',
+              textTransform: 'none',
+              fontSize: '0.875rem',
+              boxShadow: '0 4px 14px 0 rgba(56, 189, 248, 0.3)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+                boxShadow: '0 6px 20px 0 rgba(56, 189, 248, 0.4)',
+                transform: 'translateY(-1px)',
+              },
+              '&:active': {
+                transform: 'translateY(0)',
+              }
+            }}
+          >
+            Connect Wallet
+          </Button>
+        </ConnectWallet>
+      );
+    }
+  };
 
   return (
     <AppBar 
@@ -146,7 +229,7 @@ const Header = () => {
 
           {/* Wallet */}
           <Box sx={{ ml: { xs: 0, md: 2 } }}>
-            <OnchainKitWallet />
+            <WalletComponent />
           </Box>
         </Box>
       </Toolbar>
@@ -224,6 +307,34 @@ const Header = () => {
                 </ListItemButton>
               </ListItem>
             ))}
+            {/* Achievements Link */}
+            <ListItem disablePadding sx={{ mb: 0.5 }}>
+              <ListItemButton 
+                component={Link} 
+                to="/achievements"
+                sx={{
+                  color: '#fbbf24',
+                  fontWeight: 700,
+                  mx: 2,
+                  borderRadius: '8px',
+                  fontSize: { xs: '1rem', sm: '1.05rem' },
+                  '&:hover': {
+                    bgcolor: 'rgba(251, 191, 36, 0.08)',
+                    color: '#f59e42'
+                  }
+                }}
+              >
+                <EmojiEventsIcon sx={{ mr: 1, color: '#fbbf24' }} />
+                <ListItemText 
+                  primary="Achievements"
+                  primaryTypographyProps={{
+                    fontSize: { xs: '1rem', sm: '1.05rem' },
+                    fontWeight: 700,
+                    textAlign: 'center',
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { MiniKitProvider } from '@coinbase/onchainkit/minikit';
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { config } from './config/wagmi';
@@ -10,7 +9,6 @@ import StoryPlay from './components/StoryPlay';
 import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
 import { useState, useEffect } from 'react';
-import { Web3Provider } from './components/Web3Provider';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -57,16 +55,9 @@ function App() {
     <ErrorBoundary>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <MiniKitProvider
-            projectId="web3-life-mini-app"
-            notificationProxyUrl="/api/notification"
-          >
-            <Web3Provider>
-              <Router>
-                <AppContent />
-              </Router>
-            </Web3Provider>
-          </MiniKitProvider>
+          <Router>
+            <AppContent />
+          </Router>
         </QueryClientProvider>
       </WagmiProvider>
     </ErrorBoundary>

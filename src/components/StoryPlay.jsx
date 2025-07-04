@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAccount, useConnect } from 'wagmi';
 import { stories } from '../data/stories';
 import { calculateCurrentSessionProgress, calculateOverallParagraphProgress } from '../utils/progressUtils';
 import {
@@ -21,7 +22,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import AboutDrawer from './AboutDrawer';
-import { useWeb3 } from './Web3Provider';
 import Alert from '@mui/material/Alert';
 import BookIcon from '@mui/icons-material/Book';
 import Snackbar from '@mui/material/Snackbar';
@@ -30,7 +30,28 @@ const StoryPlay = (props) => {
   const params = useParams();
   const navigate = useNavigate();
   const storyId = props.storyId || parseInt(params.storyId);
-  const { isConnected, connect, mintEnding } = useWeb3();
+  const { isConnected, address } = useAccount();
+  const { connect, connectors } = useConnect();
+
+  // Mock mintEnding function for now
+  const mintEnding = async (storyId, endingId, metadata) => {
+    console.log('Minting ending:', { storyId, endingId, metadata });
+    // This would integrate with actual minting logic
+    return {
+      success: true,
+      transaction: {
+        tokenId: Math.floor(Math.random() * 1000000),
+        txHash: `0x${Math.random().toString(16).slice(2)}`
+      }
+    };
+  };
+
+  const handleConnect = () => {
+    const coinbaseConnector = connectors.find(connector => connector.id === 'coinbaseWallet');
+    if (coinbaseConnector) {
+      connect({ connector: coinbaseConnector });
+    }
+  };
 
   const [currentStory, setCurrentStory] = useState(null);
   const [showAbout, setShowAbout] = useState(false);
@@ -373,7 +394,7 @@ const StoryPlay = (props) => {
               color="primary"
               size="large"
               sx={{ borderRadius: 3, px: 4, py: 1.5, fontWeight: 700, fontSize: '1rem', boxShadow: 4 }}
-              onClick={connect}
+              onClick={handleConnect}
             >
               Connect Wallet
             </Button>

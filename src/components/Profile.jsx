@@ -4,6 +4,8 @@ import { base } from 'viem/chains';
 import { stories } from '../data/stories';
 import { getStoryProgress, calculateStoryProgress } from '../utils/progressUtils';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { address, isConnected } = useAccount();
@@ -13,6 +15,15 @@ const Profile = () => {
       <div className="container">
         <div className="profile-header">
           <div className="text-center">
+            <Button
+              component={Link}
+              to="/achievements"
+              variant="contained"
+              color="primary"
+              sx={{ mb: 2, fontWeight: 700, borderRadius: 3, px: 3, py: 1, fontSize: { xs: '0.95rem', sm: '1.1rem' } }}
+            >
+              🏆 Achievements
+            </Button>
             {isConnected && address ? (
               <>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
@@ -77,10 +88,18 @@ const Profile = () => {
                     </div>
                     <span className="text-gray-400">{percent}% complete</span>
                     {percent === 100 && (
-                      <button className="btn btn-secondary" style={{ fontSize: '0.75rem', marginLeft: '1rem' }} onClick={() => {
-                        localStorage.removeItem(`storyProgress_${story.id}`);
-                        window.location.reload();
-                      }}>Reset Progress</button>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        sx={{ fontSize: '0.75rem', ml: 1, borderRadius: 2, px: 2, py: 0.5, fontWeight: 600 }}
+                        onClick={() => {
+                          localStorage.removeItem(`storyProgress_${story.id}`);
+                          window.location.reload();
+                        }}
+                      >
+                        Replay
+                      </Button>
                     )}
                   </div>
                 </div>
