@@ -6,6 +6,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { CoinbaseWalletSDK } from '@coinbase/wallet-sdk';
 
 const OnchainKitWallet = () => {
   const { isConnected, address, connect, disconnect } = useMiniKit();
@@ -18,6 +19,16 @@ const OnchainKitWallet = () => {
     if (!isConnected) connect();
   };
   const handleClose = () => setAnchorEl(null);
+
+  const coinbaseWallet = new CoinbaseWalletSDK({
+    appName: "Decisions",
+    appLogoUrl: "https://your-app-logo.png",
+    darkMode: true
+  });
+
+  const ethereum = coinbaseWallet.makeWeb3Provider(
+    "https://mainnet.infura.io/v3/your-infura-id", 1
+  );
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
