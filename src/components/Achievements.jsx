@@ -28,6 +28,7 @@ const getAchievements = () => {
 
 const Achievements = () => {
   const { storiesCompleted, endingsFound } = getAchievements();
+  const hasProgress = storiesCompleted > 0 || endingsFound > 0;
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #2563eb 100%)', py: 6, px: 2 }}>
@@ -42,7 +43,7 @@ const Achievements = () => {
               <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
                 Stories Completed
               </Typography>
-              <Chip label={storiesCompleted} color="success" size="medium" sx={{ fontSize: '1.2rem', fontWeight: 700, px: 2, my: 2 }} />
+              <Chip label={hasProgress ? storiesCompleted : '-'} color="success" size="medium" sx={{ fontSize: '1.2rem', fontWeight: 700, px: 2, my: 2 }} />
               <Typography variant="body2" color="text.secondary">
                 Number of unique stories you have completed by reaching any ending.
               </Typography>
@@ -56,7 +57,7 @@ const Achievements = () => {
               <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
                 Endings Found
               </Typography>
-              <Chip label={endingsFound} color="warning" size="medium" sx={{ fontSize: '1.2rem', fontWeight: 700, px: 2, my: 2 }} />
+              <Chip label={hasProgress ? endingsFound : '-'} color="warning" size="medium" sx={{ fontSize: '1.2rem', fontWeight: 700, px: 2, my: 2 }} />
               <Typography variant="body2" color="text.secondary">
                 Total endings you have discovered, even if from replaying the same story.
               </Typography>
@@ -64,12 +65,21 @@ const Achievements = () => {
           </Card>
         </Grid>
       </Grid>
-      <Box sx={{ mt: 8, textAlign: 'center' }}>
-        <ExploreIcon sx={{ fontSize: 40, color: '#38bdf8', mb: 1 }} />
-        <Typography variant="h6" color="text.secondary">
-          Keep exploring stories and finding new endings to unlock more achievements!
-        </Typography>
-      </Box>
+      {!hasProgress && (
+        <Box sx={{ mt: 8, textAlign: 'center' }}>
+          <Typography variant="h6" color="text.secondary">
+            No achievements yet. Start exploring stories to unlock achievements!
+          </Typography>
+        </Box>
+      )}
+      {hasProgress && (
+        <Box sx={{ mt: 8, textAlign: 'center' }}>
+          <ExploreIcon sx={{ fontSize: 40, color: '#38bdf8', mb: 1 }} />
+          <Typography variant="h6" color="text.secondary">
+            Keep exploring stories and finding new endings to unlock more achievements!
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

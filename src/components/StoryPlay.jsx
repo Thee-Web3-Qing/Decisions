@@ -777,8 +777,9 @@ const StoryPlay = (props) => {
                       transform: 'translateY(-2px)'
                     },
                     transition: 'all 0.3s ease',
-                    minWidth: { xs: '90vw', sm: 250 },
-                    maxWidth: 400,
+                    maxWidth: 340,
+                    width: '100%',
+                    mx: 'auto',
                     alignSelf: 'center',
                     whiteSpace: 'normal',
                     wordBreak: 'break-word',
