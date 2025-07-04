@@ -40,9 +40,11 @@ const Header = () => {
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
-        px: { xs: 2, sm: 4 },
+        px: { xs: 1, sm: 4 },
         py: 1,
-        minHeight: '64px'
+        minHeight: { xs: '56px', sm: '64px' },
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
         {/* Logo/Brand */}
         <Typography
@@ -57,8 +59,12 @@ const Header = () => {
             WebkitTextFillColor: 'transparent',
             fontWeight: 900,
             letterSpacing: '-0.5px',
-            fontSize: { xs: '1.5rem', sm: '1.75rem' },
+            fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.75rem' },
             flexGrow: { xs: 1, sm: 0 },
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: { xs: '60vw', sm: 'none' },
             '&:hover': {
               background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)',
               backgroundClip: 'text',
@@ -85,9 +91,9 @@ const Header = () => {
                 textDecoration: 'none',
                 color: isActive(link.path) ? '#38bdf8' : '#cbd5e1',
                 fontWeight: isActive(link.path) ? 600 : 500,
-                fontSize: '0.95rem',
-                px: 3,
-                py: 1.5,
+                fontSize: { xs: '0.9rem', sm: '0.95rem' },
+                px: { xs: 2, sm: 3 },
+                py: { xs: 1, sm: 1.5 },
                 borderRadius: '12px',
                 transition: 'all 0.2s ease-in-out',
                 position: 'relative',
@@ -153,7 +159,7 @@ const Header = () => {
         sx={{ 
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
-            width: 280,
+            width: { xs: '80vw', sm: 280 },
             background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             borderLeft: '1px solid rgba(148, 163, 184, 0.1)'
           }
@@ -175,7 +181,9 @@ const Header = () => {
               color: '#60a5fa',
               fontWeight: 700,
               borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
-              mb: 1
+              mb: 1,
+              fontSize: { xs: '1.1rem', sm: '1.2rem' },
+              textAlign: 'center',
             }}
           >
             Menu
@@ -192,6 +200,7 @@ const Header = () => {
                     fontWeight: isActive(link.path) ? 600 : 500,
                     mx: 2,
                     borderRadius: '8px',
+                    fontSize: { xs: '1rem', sm: '1.05rem' },
                     '&.Mui-selected': {
                       bgcolor: 'rgba(56, 189, 248, 0.08)',
                       '&:hover': {
@@ -207,8 +216,9 @@ const Header = () => {
                   <ListItemText 
                     primary={link.label}
                     primaryTypographyProps={{
-                      fontSize: '1rem',
-                      fontWeight: 'inherit'
+                      fontSize: { xs: '1rem', sm: '1.05rem' },
+                      fontWeight: 'inherit',
+                      textAlign: 'center',
                     }}
                   />
                 </ListItemButton>

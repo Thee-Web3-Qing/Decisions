@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAccount, useConnect } from 'wagmi';
 import { stories } from '../data/stories';
 import { calculateCurrentSessionProgress, calculateOverallParagraphProgress } from '../utils/progressUtils';
 import {
@@ -31,8 +30,7 @@ const StoryPlay = (props) => {
   const params = useParams();
   const navigate = useNavigate();
   const storyId = props.storyId || parseInt(params.storyId);
-  const { isConnected } = useAccount();
-  const { connect, mintEnding } = useWeb3();
+  const { isConnected, connect, mintEnding } = useWeb3();
 
   const [currentStory, setCurrentStory] = useState(null);
   const [showAbout, setShowAbout] = useState(false);
@@ -615,20 +613,20 @@ const StoryPlay = (props) => {
         </Box>
 
         {/* Progress Bar */}
-        <Box sx={{ mb: 3 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-            <Typography variant="caption" color="text.secondary">
+        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1, flexWrap: 'wrap' }}>
+            <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.95rem' } }}>
               {currentNode.type === 'intro' ? 'Introduction' : 'Chapter'} {currentParaIdx + 1} of {totalParagraphs}
             </Typography>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.95rem' } }}>
               {Math.round(overallProgress)}% Story Complete
-        </Typography>
+            </Typography>
           </Box>
           <LinearProgress 
             variant="determinate" 
             value={overallProgress} 
             sx={{ 
-              height: 8, 
+              height: { xs: 6, sm: 8 }, 
               borderRadius: 4,
               backgroundColor: 'rgba(0,0,0,0.1)',
               '& .MuiLinearProgress-bar': {
@@ -640,27 +638,30 @@ const StoryPlay = (props) => {
         </Box>
 
         {/* Story Content */}
-        <CardContent sx={{ px: 0, py: 2 }}>
+        <CardContent sx={{ px: { xs: 0, sm: 2 }, py: { xs: 1, sm: 2 } }}>
           <Box sx={{ 
             background: 'rgba(255,255,255,0.9)', 
             borderRadius: 3, 
-            p: 4, 
+            p: { xs: 2, sm: 4 }, 
             mb: 3,
             boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-            border: '1px solid rgba(255,255,255,0.3)'
+            border: '1px solid rgba(255,255,255,0.3)',
+            maxWidth: '100%',
+            overflowX: 'auto',
           }}>
             <Typography 
               variant="body1" 
               color="text.primary" 
               sx={{ 
-                fontSize: '1.1rem',
+                fontSize: { xs: '1rem', sm: '1.1rem' },
                 lineHeight: 1.8,
                 fontWeight: 400,
                 textAlign: 'left',
-                minHeight: 120,
+                minHeight: 80,
                 fontFamily: '"Georgia", serif',
+                wordBreak: 'break-word',
                 '&::first-letter': {
-                  fontSize: '3rem',
+                  fontSize: { xs: '2rem', sm: '3rem' },
                   fontWeight: 'bold',
                   color: 'primary.main',
                   float: 'left',
@@ -671,7 +672,7 @@ const StoryPlay = (props) => {
               }}
             >
               {currentParagraph ? currentParagraph.text : 'Loading...'}
-          </Typography>
+            </Typography>
           </Box>
         </CardContent>
 
@@ -679,26 +680,27 @@ const StoryPlay = (props) => {
         <CardActions sx={{ justifyContent: 'center', mt: 2, flexWrap: 'wrap', gap: 2 }}>
           {/* Previous Button */}
           {currentParaIdx > 0 && (
-              <Button
+            <Button
               variant="outlined"
-                color="primary"
+              color="primary"
               size="large"
               startIcon={<ArrowBackIcon />}
-                sx={{
-                  borderRadius: 3,
-                  px: 4,
-                  py: 1.5,
+              sx={{
+                borderRadius: 3,
+                px: { xs: 2, sm: 4 },
+                py: 1.5,
                 fontWeight: 600, 
-                  fontSize: '1rem',
+                fontSize: { xs: '0.95rem', sm: '1rem' },
                 borderWidth: 2,
-                  '&:hover': {
+                minWidth: 120,
+                '&:hover': {
                   borderWidth: 2
                 }
-                }}
+              }}
               onClick={handlePrevious}
-              >
+            >
               Previous
-              </Button>
+            </Button>
           )}
           
           {/* Next Button */}
@@ -710,11 +712,12 @@ const StoryPlay = (props) => {
               endIcon={<ArrowForwardIcon />}
               sx={{ 
                 borderRadius: 3, 
-                px: 6, 
+                px: { xs: 3, sm: 6 }, 
                 py: 1.5, 
                 fontWeight: 700, 
-                fontSize: '1rem', 
+                fontSize: { xs: '0.95rem', sm: '1rem' }, 
                 boxShadow: 4,
+                minWidth: 120,
                 background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
                 '&:hover': {
                   background: 'linear-gradient(45deg, #5a6fd8 30%, #6a4190 90%)',
@@ -730,7 +733,7 @@ const StoryPlay = (props) => {
           {/* Choices */}
           {currentParaIdx === totalParagraphs - 1 && currentNode.choices ? (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%', mt: 2 }}>
-              <Typography variant="h6" fontWeight={600} color="primary" gutterBottom>
+              <Typography variant="h6" fontWeight={600} color="primary" gutterBottom sx={{ fontSize: { xs: '1.05rem', sm: '1.2rem' } }}>
                 What will you do?
               </Typography>
               {currentNode.choices.map((choice) => (
@@ -741,10 +744,10 @@ const StoryPlay = (props) => {
                   size="large"
                   sx={{ 
                     borderRadius: 3, 
-                    px: 4, 
+                    px: { xs: 2, sm: 4 }, 
                     py: 2, 
                     fontWeight: 600, 
-                    fontSize: '1rem', 
+                    fontSize: { xs: '0.95rem', sm: '1rem' }, 
                     boxShadow: 4,
                     background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
                     '&:hover': {
@@ -753,7 +756,11 @@ const StoryPlay = (props) => {
                       transform: 'translateY(-2px)'
                     },
                     transition: 'all 0.3s ease',
-                    minWidth: 250
+                    minWidth: { xs: '90vw', sm: 250 },
+                    maxWidth: 400,
+                    alignSelf: 'center',
+                    whiteSpace: 'normal',
+                    wordBreak: 'break-word',
                   }}
                   onClick={() => handleChoice(choice)}
                   disabled={selectedChoice === choice.id}

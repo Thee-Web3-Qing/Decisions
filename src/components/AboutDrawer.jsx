@@ -17,9 +17,12 @@ const AboutDrawer = ({ open, onClose, story }) => {
           fixed top-0 right-0 h-full w-full max-w-md bg-gradient-to-br from-slate-900/95 to-indigo-900/95
           border-l border-cyan-400/50 shadow-2xl z-10 flex flex-col
           transition-transform duration-300
+          sm:max-w-sm md:max-w-md lg:max-w-lg
         `}
         style={{
-          minWidth: '320px',
+          minWidth: '0',
+          width: '100%',
+          maxWidth: '100%',
           transform: 'translateX(0)',
         }}
       >
@@ -32,18 +35,18 @@ const AboutDrawer = ({ open, onClose, story }) => {
           <span style={{ fontSize: 24, fontWeight: 'bold', lineHeight: 1 }}>×</span>
         </button>
         {/* About Content */}
-        <div className="p-6 md:p-8 flex flex-col gap-6 overflow-y-auto flex-1">
+        <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-6 overflow-y-auto flex-1">
           {story?.coverImage && (
             <img
               src={story.coverImage}
               alt={story.title}
               className="rounded-lg shadow-md w-full mb-4 object-cover"
-              style={{ maxHeight: "260px" }}
+              style={{ maxHeight: "180px", width: '100%', objectFit: 'cover' }}
             />
           )}
-          <h2 className="text-2xl md:text-3xl font-bold text-blue-300 mb-2 text-center">{story?.title}</h2>
-          <p className="text-gray-500 mb-4">by Qing the Creator</p>
-          <div className="space-y-4 text-slate-300 text-base leading-relaxed text-center">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-300 mb-2 text-center">{story?.title}</h2>
+          <p className="text-gray-500 mb-4 text-sm sm:text-base">by Qing the Creator</p>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed text-center">
             <p>{story?.description}</p>
             <p>Uche didn't plan to go viral — he was just trying to survive.</p>
             <p>
@@ -56,7 +59,7 @@ const AboutDrawer = ({ open, onClose, story }) => {
           </div>
           <div className="flex justify-center mt-4">
             <button
-              className="group relative px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-lg border border-cyan-400/30 overflow-hidden"
+              className="group relative px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-base sm:text-lg border border-cyan-400/30 overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <span role="img" aria-label="play">▶️</span>

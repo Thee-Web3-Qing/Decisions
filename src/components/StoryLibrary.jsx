@@ -28,21 +28,22 @@ const StoryLibrary = () => {
       <Typography variant="h3" align="center" fontWeight={800} color="#60a5fa" gutterBottom sx={{ mb: 6, letterSpacing: 1 }}>
         Story Library
       </Typography>
-      <Grid container spacing={4} justifyContent="center" maxWidth="lg" sx={{ mx: 'auto' }}>
+      
+      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center" maxWidth="lg" sx={{ mx: 'auto', width: '100%' }}>
         {stories.map((story) => {
           const progress = getStoryProgress(story.id);
           const percent = Math.round(calculateStoryProgress(story, progress));
           const hasProgress = progress && percent > 0;
           
           return (
-            <Grid item xs={12} sm={6} md={4} key={story.id}>
+            <Grid item xs={12} sm={6} md={4} key={story.id} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Card
                 elevation={8}
                 sx={{
                   borderRadius: 4,
                   border: '2px solid #22d3ee',
                   bgcolor: 'background.paper',
-                  minWidth: 320,
+                  minWidth: { xs: '90vw', sm: 320 },
                   maxWidth: 340,
                   minHeight: 500,
                   maxHeight: 600,
@@ -67,7 +68,7 @@ const StoryLibrary = () => {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: story.description.length < 60 ? 'center' : 'flex-start',
-                  p: 2,
+                  p: { xs: 1, sm: 2 },
                   minHeight: 300,
                   overflow: 'hidden',
                   position: 'relative',
@@ -77,31 +78,31 @@ const StoryLibrary = () => {
                       component="img"
                       src={story.coverImage}
                       alt={story.title}
-                      sx={{ width: 180, height: 120, objectFit: 'cover', borderRadius: 2, boxShadow: 2, mb: 2, border: '1px solid #bae6fd', mx: 'auto', display: 'block' }}
+                      sx={{ width: { xs: '100%', sm: 180 }, height: { xs: 120, sm: 120 }, objectFit: 'cover', borderRadius: 2, boxShadow: 2, mb: 2, border: '1px solid #bae6fd', mx: 'auto', display: 'block', maxWidth: 220 }}
                     />
                   ) : (
                     <Box sx={{ fontSize: 56, color: '#38bdf8', mb: 2 }}>{story.id === 1 ? '📖' : '🚧'}</Box>
                   )}
-                  <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
+                  <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>
                     {story.title}
                   </Typography>
-                  <Typography variant="subtitle1" color="#06b6d4" gutterBottom>
+                  <Typography variant="subtitle1" color="#06b6d4" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}>
                     {story.character}
                   </Typography>
                   <Divider sx={{ my: 1 }} />
-                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2 }}>
-                    <Chip label={story.difficulty} color="primary" size="small" sx={{ bgcolor: '#1e40af', color: '#bae6fd', fontWeight: 600 }} />
-                    <Chip label={story.estimatedTime} color="secondary" size="small" sx={{ bgcolor: '#334155', color: '#bae6fd', fontWeight: 600 }} />
+                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2, flexWrap: 'wrap' }}>
+                    <Chip label={story.difficulty} color="primary" size="small" sx={{ bgcolor: '#1e40af', color: '#bae6fd', fontWeight: 600, fontSize: { xs: '0.85em', sm: '1em' } }} />
+                    <Chip label={story.estimatedTime} color="secondary" size="small" sx={{ bgcolor: '#334155', color: '#bae6fd', fontWeight: 600, fontSize: { xs: '0.85em', sm: '1em' } }} />
                   </Box>
                   
                   {/* Progress Bar */}
                   {hasProgress && (
                     <Box sx={{ mb: 2 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem' } }}>
                           Progress
                         </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 600 }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem' }, fontWeight: 600 }}>
                           {percent}%
                         </Typography>
                       </Box>
@@ -137,6 +138,7 @@ const StoryLibrary = () => {
                       lineHeight: 1.2,
                       alignItems: 'center',
                       justifyContent: 'center',
+                      fontSize: { xs: '0.95em', sm: '1em' }
                     }}
                   >
                     {story.description.length > 300
@@ -161,7 +163,7 @@ const StoryLibrary = () => {
                       px: 4,
                       py: 1.5,
                       fontWeight: 700,
-                      fontSize: '1rem',
+                      fontSize: { xs: '0.95rem', sm: '1rem' },
                       background: hasProgress ? 'linear-gradient(90deg, #10b981 0%, #2563eb 100%)' : 'linear-gradient(90deg, #2563eb 0%, #10b981 100%)',
                       color: '#fff',
                       boxShadow: 4,
@@ -182,7 +184,7 @@ const StoryLibrary = () => {
       </Grid>
       {/* Story Details Modal */}
       {showDetails && selectedStory && (
-        <Box position="fixed" top={0} left={0} width="100vw" height="100vh" zIndex={1300} display="flex" alignItems="center" justifyContent="center" bgcolor="rgba(0,0,0,0.7)">
+        <Box position="fixed" top={0} left={0} width="100%" height="100vh" zIndex={1300} display="flex" alignItems="center" justifyContent="center" bgcolor="rgba(0,0,0,0.7)">
           <Card sx={{ maxWidth: 420, width: '100%', borderRadius: 4, border: '2px solid #22d3ee', boxShadow: 12, p: 4, position: 'relative', textAlign: 'center' }}>
             <Button
               onClick={() => setShowDetails(false)}

@@ -14,7 +14,16 @@ export const useWeb3 = () => {
 // Inner provider that uses MiniKit hooks
 const Web3InnerProvider = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const { setFrameReady, isFrameReady, context, updateClientContext } = useMiniKit();
+  const { 
+    setFrameReady, 
+    isFrameReady, 
+    context, 
+    updateClientContext,
+    isConnected,
+    address,
+    connect,
+    disconnect
+  } = useMiniKit();
 
   useEffect(() => {
     // Initialize MiniKit when component mounts
@@ -31,11 +40,29 @@ const Web3InnerProvider = ({ children }) => {
     initWeb3();
   }, [isFrameReady, setFrameReady]);
 
+  // Mock mintEnding function for now
+  const mintEnding = async (storyId, endingId, metadata) => {
+    console.log('Minting ending:', { storyId, endingId, metadata });
+    // This would integrate with actual minting logic
+    return {
+      success: true,
+      transaction: {
+        tokenId: Math.floor(Math.random() * 1000000),
+        txHash: `0x${Math.random().toString(16).slice(2)}`
+      }
+    };
+  };
+
   const value = {
     isInitialized,
     context,
     updateClientContext,
-    isFrameReady
+    isFrameReady,
+    isConnected,
+    address,
+    connect,
+    disconnect,
+    mintEnding
   };
 
   return (

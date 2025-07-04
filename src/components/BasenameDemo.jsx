@@ -50,6 +50,19 @@ const BasenameDemo = () => {
               Your Connected Wallet
             </h2>
             
+            <div style={{ 
+              background: 'rgba(59, 130, 246, 0.1)', 
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              borderRadius: '0.5rem', 
+              padding: '1rem', 
+              marginBottom: '1rem',
+              textAlign: 'center'
+            }}>
+              <p className="text-blue-300" style={{ fontSize: '0.875rem', margin: 0 }}>
+                <strong>Note:</strong> This shows YOUR connected wallet. Each user will see their own wallet address and Basename.
+              </p>
+            </div>
+            
             {address ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <Avatar 
