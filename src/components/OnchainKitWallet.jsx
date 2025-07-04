@@ -2,7 +2,6 @@ import { useMiniKit } from '@coinbase/onchainkit/minikit';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
@@ -48,7 +47,7 @@ const OnchainKitWallet = () => {
             </MenuItem>
           </>
         ) : (
-          <MenuItem onClick={() => { connect(); handleClose(); }}>
+          <MenuItem onClick={() => { connect(); handleClose(); }} disabled={isConnected}>
             <Typography variant="body2" color="primary">Connect Wallet</Typography>
           </MenuItem>
         )}

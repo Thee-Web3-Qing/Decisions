@@ -620,7 +620,7 @@ const StoryPlay = (props) => {
             </Typography>
             <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.95rem' } }}>
               {Math.round(overallProgress)}% Story Complete
-            </Typography>
+        </Typography>
           </Box>
           <LinearProgress 
             variant="determinate" 
@@ -672,7 +672,7 @@ const StoryPlay = (props) => {
               }}
             >
               {currentParagraph ? currentParagraph.text : 'Loading...'}
-            </Typography>
+          </Typography>
           </Box>
         </CardContent>
 
@@ -680,27 +680,27 @@ const StoryPlay = (props) => {
         <CardActions sx={{ justifyContent: 'center', mt: 2, flexWrap: 'wrap', gap: 2 }}>
           {/* Previous Button */}
           {currentParaIdx > 0 && (
-            <Button
+              <Button
               variant="outlined"
-              color="primary"
+                color="primary"
               size="large"
               startIcon={<ArrowBackIcon />}
-              sx={{
-                borderRadius: 3,
+                sx={{
+                  borderRadius: 3,
                 px: { xs: 2, sm: 4 },
-                py: 1.5,
+                  py: 1.5,
                 fontWeight: 600, 
                 fontSize: { xs: '0.95rem', sm: '1rem' },
                 borderWidth: 2,
                 minWidth: 120,
-                '&:hover': {
+                  '&:hover': {
                   borderWidth: 2
                 }
-              }}
+                }}
               onClick={handlePrevious}
-            >
+              >
               Previous
-            </Button>
+              </Button>
           )}
           
           {/* Next Button */}
