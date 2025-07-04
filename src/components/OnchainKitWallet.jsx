@@ -27,7 +27,8 @@ const OnchainKitWallet = () => {
   });
 
   const ethereum = coinbaseWallet.makeWeb3Provider(
-    "https://mainnet.infura.io/v3/your-infura-id", 1
+    "https://mainnet.infura.io/v3/your-infura-id",
+    1
   );
 
   return (
